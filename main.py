@@ -164,8 +164,7 @@ TEXT_SCALE = 0.5
 DEFAULT_FONT = "FOT-UDKakugoC80 Pro DB"
 
 load_metrics()
-base_phrase = "Oh. And it needs to be found and caught down"
-base_metric = measure_text(base_phrase)
+base_metric = 650
 
 
 def compute_font_for_text(text):
@@ -443,7 +442,7 @@ class MessageEdit(QTextEdit):
 class BoxCanvas(QWidget):
     """Draws the textbox background image (or a fallback panel) behind the editor."""
 
-    CANVAS_W = 850
+    CANVAS_W = 1000
     CANVAS_H = 300
 
     # Editor placement inside the textbox graphic — tweak these to line the
@@ -457,6 +456,13 @@ class BoxCanvas(QWidget):
         super().__init__(parent)
         self.setFixedSize(self.CANVAS_W, self.CANVAS_H)
         self.bg = QPixmap(asset_path("textbox.png"))
+        if not self.bg.isNull():
+            self.bg = self.bg.scaled(
+                self.CANVAS_W,
+                self.CANVAS_H,
+                Qt.AspectRatioMode.IgnoreAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
 
         self.editor = MessageEdit(self)
         self.editor.setGeometry(
@@ -499,7 +505,7 @@ class BoxCanvas(QWidget):
 # -------------------------------
 
 class PreviewerWindow(QMainWindow):
-    SIDE_PANEL_W = 560
+    SIDE_PANEL_W = 450
 
     def __init__(self):
         super().__init__()
